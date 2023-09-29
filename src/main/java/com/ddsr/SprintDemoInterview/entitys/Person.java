@@ -2,7 +2,7 @@ package com.ddsr.SprintDemoInterview.entitys;
 
 import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
