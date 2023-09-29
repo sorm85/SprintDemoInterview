@@ -15,4 +15,16 @@ public class PersonServices {
     public List<Person> getAllPersons () {
         return personRepository.findAll();
     }
+//    Please extend our existing Person REST API by adding the following endpoints:
+//            1. Create a New Person
+// Method: POST
+//
+// Endpoint: /api/persons
+// Request Body: Should accept a JSON object with firstName and lastName.
+// Action: Add
+//}
+
+    public void  addingPerson (Person person) {
+        personRepository.save(person);
+    }
 }
