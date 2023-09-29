@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -124,5 +125,33 @@ public class PersonControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
 
+    }
+    @Test
+    public void testSearchPersons() throws Exception {
+        Person person1 = new Person("John", "Doe");
+        Person person2 = new Person("Jane", "Doe");
+        List <Person> persons = new ArrayList<>();
+
+
+
+        person1.setId(1L);
+        person2.setId(2L);
+
+        persons.add(person1);
+        persons.add(person2);
+
+        Mockito.when(personService.searchPersons(Mockito.any(String.class))).thenReturn(persons);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/persons/search?name=Doe")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(persons)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName").value("John"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].lastName").value("Doe"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].firstName").value("Jane"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].lastName").value("Doe"));
     }
 }

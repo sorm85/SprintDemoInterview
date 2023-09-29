@@ -3,7 +3,9 @@ package com.ddsr.SprintDemoInterview.repos;
 import com.ddsr.SprintDemoInterview.entitys.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PersonRepository extends JpaRepository <Person, Long> {
+import java.util.List;
 
+public interface PersonRepository extends JpaRepository <Person, Long> {
+    List<Person> findByFirstNameContainingOrLastNameContaining (String firstName, String lastName);
 
 }

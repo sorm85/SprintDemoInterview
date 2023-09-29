@@ -57,4 +57,12 @@ public class PersonController {
         }
         return ResponseEntity.ok().build();
     }
+    @GetMapping("search")
+    public ResponseEntity<List<Person>> searchPersonByName (@RequestParam String name) {
+        List<Person> persons = personService.searchPersons(name);
+        if (persons.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(persons);
+    }
 }

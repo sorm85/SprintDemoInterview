@@ -39,6 +39,9 @@ public class PersonServices {
         Person person = personRepository.getById(id);
          personRepository.delete(person);
     }
+    public List<Person> searchPersons (String str) {
+        return personRepository.findByFirstNameContainingOrLastNameContaining(str, str);
+    }
 
 
 }
