@@ -45,4 +45,16 @@ public class PersonController {
         Person updatePerson = personService.addingPerson(personLocal);
         return ResponseEntity.ok(updatePerson);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePerson (@PathVariable Long id) {
+        Person personLocal = personService.searchPerson(id);
+
+        if (personLocal == null){
+            return ResponseEntity.notFound().build();
+        } else {
+            personService.deletePerson(id);
+
+        }
+        return ResponseEntity.ok().build();
+    }
 }

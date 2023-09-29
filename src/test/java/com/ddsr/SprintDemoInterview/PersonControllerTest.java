@@ -78,4 +78,31 @@ public class PersonControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("John"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Doe"));
     }
+    @Test
+    public void testUpdatePerson() throws Exception {
+        Long personId = 1L;
+        Person person1 = new Person("John", "Doe");
+        Person person2 = new Person("Jane", "Doe");
+
+        person1.setId(personId);
+        person2.setId(personId);
+
+
+        Mockito.when(personService.searchPerson(Mockito.any(Long.class))).thenReturn(person1);
+        Mockito.when(personService.addingPerson(Mockito.any(Person.class))).thenReturn(person2);
+
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/api/persons/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(person1)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Jane"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Doe"));
+
+//        Mockito.verify(personService).searchPerson(personId);
+//        Mockito.verify(personService).addingPerson(person2);
+
+    }
 }

@@ -35,6 +35,10 @@ public class PersonServices {
     public Person searchPerson (Long id) {
         return personRepository.getById(id);
     }
+    public void deletePerson (Long id) {
+        Person person = personRepository.getById(id);
+         personRepository.delete(person);
+    }
 
 
 }
