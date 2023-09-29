@@ -175,6 +175,6 @@ public class PersonControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(persons)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").value(2));
+                .andExpect(MockMvcResultMatchers.content().string("2"));
     }
 }
