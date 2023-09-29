@@ -154,4 +154,27 @@ public class PersonControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].firstName").value("Jane"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].lastName").value("Doe"));
     }
+    @Test
+    public void testCount() throws Exception {
+        Person person1 = new Person("John", "Doe");
+        Person person2 = new Person("Jane", "Doe");
+        List <Person> persons = new ArrayList<>();
+
+
+
+        person1.setId(1L);
+        person2.setId(2L);
+
+        persons.add(person1);
+        persons.add(person2);
+
+        Mockito.when(personService.countPersons()).thenReturn(2L);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/persons/count")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(persons)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1]").value(2));
+    }
 }

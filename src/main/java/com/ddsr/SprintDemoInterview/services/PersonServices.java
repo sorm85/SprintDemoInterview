@@ -43,5 +43,9 @@ public class PersonServices {
         return personRepository.findByFirstNameContainingOrLastNameContaining(str, str);
     }
 
+    public Long countPersons (){
+        return personRepository.count();
+    }
+
 
 }

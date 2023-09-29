@@ -65,4 +65,12 @@ public class PersonController {
         }
         return ResponseEntity.ok(persons);
     }
+    @GetMapping("count")
+    public ResponseEntity<Long> countPersons () {
+        Long count = personService.countPersons();
+        if (count == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(count);
+    }
 }
