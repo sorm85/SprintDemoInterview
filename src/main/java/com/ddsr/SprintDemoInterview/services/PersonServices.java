@@ -17,7 +17,7 @@ public class PersonServices {
     private PersonRepository personRepository;
 
     public List<Person> getAllPersons () {
-        return personRepository.findAll();
+        return personRepository.findAll() ;
     }
 //    Please extend our existing Person REST API by adding the following endpoints:
 //            1. Create a New Person
@@ -33,7 +33,7 @@ public class PersonServices {
     }
 
     public Person searchPerson (Long id) {
-        return personRepository.getById(id);
+        return personRepository.findById(id).orElse(null);
     }
     public void deletePerson (Long id) {
         Person person = personRepository.getById(id);
