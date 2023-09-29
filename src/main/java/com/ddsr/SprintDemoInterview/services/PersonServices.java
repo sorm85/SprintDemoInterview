@@ -3,7 +3,11 @@ package com.ddsr.SprintDemoInterview.services;
 import com.ddsr.SprintDemoInterview.entitys.Person;
 import com.ddsr.SprintDemoInterview.repos.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -31,4 +35,6 @@ public class PersonServices {
     public Person searchPerson (Long id) {
         return personRepository.getById(id);
     }
+
+
 }

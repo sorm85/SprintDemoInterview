@@ -31,4 +31,18 @@ public class PersonController {
         Person savedPerson = personService.addingPerson(person);
         return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Person> updatePerson (@PathVariable Long id, @RequestBody Person person) {
+        Person personLocal = personService.searchPerson(id);
+
+        if (personLocal == null){
+            return ResponseEntity.notFound().build();
+        }
+        personLocal.setFirstName(person.getFirstName());
+        personLocal.setLastName(person.getLastName());
+
+        Person updatePerson = personService.addingPerson(personLocal);
+        return ResponseEntity.ok(updatePerson);
+    }
 }
