@@ -105,4 +105,24 @@ public class PersonControllerTest {
 //        Mockito.verify(personService).addingPerson(person2);
 
     }
+    @Test
+    public void testDeletePerson() throws Exception {
+        Long personId = 1L;
+        Person person1 = new Person("John", "Doe");
+
+        person1.setId(personId);
+
+
+        Mockito.when(personService.searchPerson(Mockito.any(Long.class))).thenReturn(person1);
+//        Mockito.when(personService.deletePerson(Mockito.any(Long.class)));
+
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/persons/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(person1)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+
+    }
 }
