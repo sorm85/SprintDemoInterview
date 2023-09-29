@@ -24,7 +24,7 @@ public class PersonServices {
 // Action: Add
 //}
 
-    public void  addingPerson (Person person) {
-        personRepository.save(person);
+    public Person  addingPerson (Person person) {
+        return personRepository.save(person);
     }
 }
