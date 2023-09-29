@@ -17,17 +17,27 @@ public class PersonController {
     private PersonServices personService;
 
     @GetMapping
-    public List<Person> getAllPersons() {
-        return personService.getAllPersons();
+    public ResponseEntity<List<Person>> getAllPersons() {
+        List <Person> persons = personService.getAllPersons();
+        if (persons == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(persons);
     }
     @GetMapping("/{id}")
-    public Person searchPerson (@PathVariable Long id){
+    public ResponseEntity<Person> searchPerson (@PathVariable Long id){
         Person person = personService.searchPerson(id);
-        return person;
+        if (person == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(person);
     }
 
     @PostMapping(value = "/addingPerson", consumes = "application/json")
     public ResponseEntity<Person> addingPerson (@RequestBody Person person) {
+        if (person == null){
+            return ResponseEntity.notFound().build();
+        }
         Person savedPerson = personService.addingPerson(person);
         return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
     }
