@@ -27,4 +27,8 @@ public class PersonServices {
     public Person  addingPerson (Person person) {
         return personRepository.save(person);
     }
+
+    public Person searchPerson (Long id) {
+        return personRepository.getById(id);
+    }
 }

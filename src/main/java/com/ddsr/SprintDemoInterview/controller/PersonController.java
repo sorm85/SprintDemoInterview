@@ -20,6 +20,12 @@ public class PersonController {
     public List<Person> getAllPersons() {
         return personService.getAllPersons();
     }
+    @GetMapping("/{id}")
+    public Person searchPerson (@PathVariable Long id){
+        Person person = personService.searchPerson(id);
+        return person;
+    }
+
     @PostMapping(value = "/addingPerson", consumes = "application/json")
     public ResponseEntity<Person> addingPerson (@RequestBody Person person) {
         Person savedPerson = personService.addingPerson(person);
