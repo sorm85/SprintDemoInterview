@@ -3,33 +3,63 @@ package com.ddsr.SprintDemoInterview;
 import com.ddsr.SprintDemoInterview.controller.PersonController;
 import com.ddsr.SprintDemoInterview.entitys.Person;
 import com.ddsr.SprintDemoInterview.services.PersonServices;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@WebMvcTest(PersonController.class)
 public class PersonControllerTest {
 
-    @InjectMocks
-    private PersonController personController;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Mock
+
+    @MockBean
     private PersonServices personService;
 
     @Test
-    public void testGetAllPersons() {
+    public void testGetAllPersons() throws Exception {
         Person person1 = new Person("John", "Doe");
         Person person2 = new Person("Jane", "Doe");
-        when(personService.getAllPersons()).thenReturn(Arrays.asList(person1, person2));
+        Mockito.when(personService.getAllPersons()).thenReturn(Arrays.asList(person1, person2));
 
-        List<Person> persons = personController.getAllPersons();
-        assertEquals(2, persons.size());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/persons"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].firstName", Matchers.is("John")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].lastName", Matchers.is("Doe")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].firstName", Matchers.is("Jane")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].lastName", Matchers.is("Doe")));
+    }
+
+
+    @Test
+    public void testCreatePerson() throws Exception {
+        Person person = new Person("John", "Doe");
+        person.setId(1L);
+
+        Mockito.when(personService.addingPerson(Mockito.any(Person.class))).thenReturn(person);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/persons/addingPerson")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(person)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("John"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Doe"));
     }
 }
